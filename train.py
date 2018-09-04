@@ -3,10 +3,10 @@ from functions import *
 import sys
 import time 
 
-if len(sys.argv) != 4:
-	print("Usage: python train.py [stock] [window] [episodes]")
-	exit()
-0
+# if len(sys.argv) != 4:
+# 	print("Usage: python train.py [stock] [window] [episodes]")
+# 	exit()
+# 
 stock_name, window_size, episode_count = "^GSPC", 121, 50
 
 
@@ -27,7 +27,6 @@ for e in range(episode_count + 1):
 	agent.inventory = []
 
 	for t in range(l):
-		t_start = time.time()
 		action = agent.act(state)
 
 		# sit
@@ -39,7 +38,7 @@ for e in range(episode_count + 1):
 			print("episode : ", e)
 			print("Buy: " + formatPrice(data[t]))
 			print("--------------------------------")
-		elif action == 2 and len(agent.inventory) > 0: # sell	
+		elif action == 0 and len(agent.inventory) > 0: # sell	
 			if mem_action == 1 : 			
 				bought_price = agent.inventory.pop(0)
 				sold_price = data[t]
@@ -52,6 +51,8 @@ for e in range(episode_count + 1):
 				reward = sold_price - data[t]
 				print("episode : ", e)
 				print("Unhold " + formatPrice(data[t]) + " | Reward: " + formatPrice(reward))
+		else : 
+			print("Action : Unhold") 
 		done = True if t == l - 1 else False
 		agent.memory.append((state, action, reward, next_state, done))
 		state = next_state
@@ -63,9 +64,7 @@ for e in range(episode_count + 1):
 
 		if len(agent.memory) > batch_size:
 			agent.expReplay(batch_size)
-		t_end = time.time()
-		est_time = ((t_end - t_start)*e/(episode_count + 1)*t/l)/60 
-		print("estimate_time : ", est_time, " mins")
+		print("episode : ", e, "/", episode_count + 1, " process : ", t, "/", l) 
 
 	if e % 10 == 0:
 		agent.model.save("models/model_ep"+ stock_name + "_" + str(e))
