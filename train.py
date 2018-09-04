@@ -32,7 +32,7 @@ for e in range(episode_count + 1):
 		# sit
 		next_state = getState(data, t + 1, window_size + 1)
 		reward = 0
-
+		print("action : ", action)
 		if action == 1: # buy
 			agent.inventory.append(data[t])
 			print("episode : ", e)
@@ -44,12 +44,10 @@ for e in range(episode_count + 1):
 				sold_price = data[t]
 				reward = max(data[t] - bought_price, 0)
 				total_profit += data[t] - bought_price
-				print("episode : ", e)	
 				print("Sell: " + formatPrice(data[t]) + " | Profit: " + formatPrice(data[t] - bought_price))
 				print("--------------------------------")
 			elif sold_price != 0 : 
 				reward = sold_price - data[t]
-				print("episode : ", e)
 				print("Unhold " + formatPrice(data[t]) + " | Reward: " + formatPrice(reward))
 		else : 
 			print("Action : Unhold") 
