@@ -17,6 +17,7 @@ agent = Agent(window_size)
 data = getStockDataVec(stock_name)
 l = len(data) - 1
 batch_size = 32
+commission = 0.157/100
 
 mem_action = 0
 sold_price = 0   
@@ -49,6 +50,15 @@ for e in range(episode_count + 1):
 			elif sold_price != 0 : 
 				reward = sold_price - data[t]
 				print("Unhold " + formatPrice(data[t]) + " | Reward: " + formatPrice(reward))
+			else : 
+				diff = data[t] - data[t-1]
+				if diff > data[t-1]*commission : 
+					reward = -diff 
+				elif diff < data[t-1]*commission:
+					reward = abs(diff)
+				else : 
+					reward = abs(diff) 
+				print("Unhold : reward : ", reward)
 		else : 
 			print("Action : Unhold") 
 		done = True if t == l - 1 else False
