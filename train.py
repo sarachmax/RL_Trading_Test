@@ -17,7 +17,7 @@ agent = Agent(window_size)
 data = getStockDataVec(stock_name)
 l = len(data) - 1
 batch_size = 32
-commission = 0.157/100
+commission = 0.157/100 * 2 
 
 mem_action = 0
 sold_price = 0   
