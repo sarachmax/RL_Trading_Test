@@ -88,9 +88,5 @@ for e in range(episode_count + 1):
 		agent.model.save("agent/models/model"+ stock_name + "_" + str(e))
 		profit_result["model"+ stock_name + "_" + str(e)] = total_profit 
 
-file = open("train_result.txt","w") 
-file.write(str(profit_result))
-print(profit_result) 
-
 with open("train_result.txt","w") as outfile:
 	json.dump(profit_result, outfile)
