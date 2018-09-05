@@ -2,6 +2,7 @@ from agent.agent import Agent
 from functions import *
 import sys
 import time 
+import json
 
 # if len(sys.argv) != 4:
 # 	print("Usage: python train.py [stock] [window] [episodes]")
