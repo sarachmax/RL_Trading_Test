@@ -8,7 +8,7 @@ import time
 # 	exit()
 # 
 
-stock_name, window_size, episode_count = "^GSPC", 121, 50
+stock_name, window_size, episode_count = "TRUE_1D_Train", 121, 5
 
 
 # stock_name, window_size, episode_count = str(input("stock_name : ")), int(input("window_size : ")), int(input("episode_count : "))
@@ -22,6 +22,7 @@ commission = 0.157/100 * 2
 
 mem_action = 0
 sold_price = 0   
+profit_result = {}
 for e in range(episode_count + 1):
 	print("Episode " + str(e) + "/" + str(episode_count))
 	state = getState(data, 0, window_size + 1)
@@ -83,4 +84,9 @@ for e in range(episode_count + 1):
 		print("episode : ", e, "/", episode_count + 1, " process : ", t, "/", l) 
 		mem_action = action 
 	if e % 10 == 0:
-		agent.model.save("models/model_ep"+ stock_name + "_" + str(e))
+		agent.model.save("agent/models/model"+ stock_name + "_" + str(e))
+		profit_result["model"+ stock_name + "_" + str(e)] = total_profit 
+
+file = open("train_result.txt","w") 
+file.write(str(profit_result))
+print(profit_result) 
