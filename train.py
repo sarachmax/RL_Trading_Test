@@ -7,16 +7,17 @@ import time
 # 	print("Usage: python train.py [stock] [window] [episodes]")
 # 	exit()
 # 
+
 stock_name, window_size, episode_count = "^GSPC", 121, 50
 
 
 # stock_name, window_size, episode_count = str(input("stock_name : ")), int(input("window_size : ")), int(input("episode_count : "))
 
-
+model_name = ""
 agent = Agent(window_size)
 data = getStockDataVec(stock_name)
 l = len(data) - 1
-batch_size = 32
+batch_size = 32 # day to calculate reward 
 commission = 0.157/100 * 2 
 
 mem_action = 0
@@ -26,7 +27,7 @@ for e in range(episode_count + 1):
 	state = getState(data, 0, window_size + 1)
 	total_profit = 0
 	agent.inventory = []
-
+	bought_price = 0 
 	for t in range(l):
 		action = agent.act(state)
 
@@ -36,9 +37,14 @@ for e in range(episode_count + 1):
 		print("action : ", action)
 		if action == 1: # buy
 			agent.inventory.append(data[t])
+			reward = data[t] - data[t-1] - bought_price*commission
 			print("episode : ", e)
 			print("Buy: " + formatPrice(data[t]))
+			print("Reward: " , reward)
+			print("Total Profit : ", total_profit)
 			print("--------------------------------")
+			if mem_action == 0 :
+				bought_price = data[t]
 		elif action == 0 and len(agent.inventory) > 0: # sell	
 			if mem_action == 1 : 			
 				bought_price = agent.inventory.pop(0)
@@ -46,6 +52,8 @@ for e in range(episode_count + 1):
 				reward = max(data[t] - bought_price, 0)
 				total_profit += data[t] - bought_price
 				print("Sell: " + formatPrice(data[t]) + " | Profit: " + formatPrice(data[t] - bought_price))
+				print("Reward: " , reward)
+				print("Total Profit : ", total_profit)
 				print("--------------------------------")
 			elif sold_price != 0 : 
 				reward = sold_price - data[t]
@@ -57,7 +65,7 @@ for e in range(episode_count + 1):
 				elif diff < data[t-1]*commission:
 					reward = abs(diff)
 				else : 
-					reward = abs(diff) 
+					reward = abs(diff)
 				print("Unhold : reward : ", reward)
 		else : 
 			print("Action : Unhold") 
