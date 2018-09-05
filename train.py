@@ -90,3 +90,6 @@ for e in range(episode_count + 1):
 file = open("train_result.txt","w") 
 file.write(str(profit_result))
 print(profit_result) 
+
+with open("train_result.txt","w") as outfile:
+	json.dump(profit_result, outfile)
