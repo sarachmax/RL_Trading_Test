@@ -47,6 +47,7 @@ for e in range(episode_count + 1):
 			print("--------------------------------")
 			if mem_action == 0 :
 				bought_price = data[t]
+			mem_action = 1 
 		elif action == 0 and len(agent.inventory) > 0: # sell	
 			if mem_action == 1 : 			
 				bought_price = agent.inventory.pop(0)
@@ -69,6 +70,7 @@ for e in range(episode_count + 1):
 				else : 
 					reward = abs(diff)
 				print("Unhold : reward : ", reward)
+			mem_action = 0 
 		else : 
 			diff = data[t] - data[t-1]
 			if diff > data[t-1]*commission : 
