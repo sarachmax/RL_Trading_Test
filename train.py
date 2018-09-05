@@ -70,7 +70,16 @@ for e in range(episode_count + 1):
 					reward = abs(diff)
 				print("Unhold : reward : ", reward)
 		else : 
-			print("Action : Unhold") 
+			diff = data[t] - data[t-1]
+			if diff > data[t-1]*commission : 
+				reward = -diff 
+			elif diff < data[t-1]*commission:
+				reward = abs(diff)
+			else : 
+				reward = abs(diff)
+			print("Unhold : reward : ", reward)
+
+
 		done = True if t == l - 1 else False
 		agent.memory.append((state, action, reward, next_state, done))
 		state = next_state
