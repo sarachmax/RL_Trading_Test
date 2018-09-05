@@ -9,7 +9,7 @@ import json
 # 	exit()
 # 
 
-stock_name, window_size, episode_count = "TRUE_1D_Train", 121, 5
+stock_name, window_size, episode_count = "TRUE_1D_Train", 121, 50
 
 
 # stock_name, window_size, episode_count = str(input("stock_name : ")), int(input("window_size : ")), int(input("episode_count : "))
@@ -18,7 +18,7 @@ model_name = ""
 agent = Agent(window_size)
 data = getStockDataVec(stock_name)
 l = len(data) - 1
-batch_size = 32 # day to calculate reward 
+batch_size = 5 # day to calculate reward 
 commission = 0.157/100 * 2 
 
 mem_action = 0
